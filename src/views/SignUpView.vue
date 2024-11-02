@@ -14,7 +14,7 @@
               <input
                 type="text"
                 id="name"
-                v-model="name"
+                v-model="user.nombre"
                 :placeholder="texts.namePlaceholder"
                 required
               />
@@ -27,7 +27,7 @@
               <input
                 type="text"
                 id="address"
-                v-model="address"
+                v-model="user.direccion"
                 :placeholder="texts.addressPlaceholder"
                 required
               />
@@ -40,7 +40,7 @@
               <input
                 type="tel"
                 id="phone"
-                v-model="phone"
+                v-model="user.telefono"
                 :placeholder="texts.phonePlaceholder"
                 required
               />
@@ -53,8 +53,22 @@
               <input
                 type="email"
                 id="email"
-                v-model="email"
+                v-model="user.correoElectronico"
                 :placeholder="texts.emailPlaceholder"
+                required
+              />
+            </div>
+          </div>
+          <!-- Campo de Contraseña -->
+          <div class="form-group">
+            <label for="password">{{ texts.passwordLabel }}</label>
+            <div class="input-icon">
+              <span class="material-icons">lock</span>
+              <input
+                type="password"
+                id="password"
+                v-model="user.password"
+                :placeholder="texts.passwordPlaceholder"
                 required
               />
             </div>
@@ -75,32 +89,31 @@
 
 <script>
 import texts from "@/constants/text";
+import User from "@/models/User";
+import UserController from "@/controllers/UserController";
 
 export default {
   data() {
     return {
-      texts: texts.signup, // Accede a los textos de la sección signup
-      name: "",
-      address: "",
-      phone: "",
-      email: "",
+      texts: texts.signup,
+      user: new User(), // Instancia el modelo de usuario
       logo: require("@/assets/logo_sf.png"),
       illustration: require("@/assets/sign_up.png"),
     };
   },
   methods: {
-    handleSignUp() {
-      console.log("User information:", {
-        name: this.name,
-        address: this.address,
-        phone: this.phone,
-        email: this.email,
-      });
-      alert("Sign up successful!"); // Mensaje temporal
-    },
-  },
+    async handleSignUp() {
+      const response = await UserController.signup(this.user);
+      
+      alert(response.message);
+      if (response.success) {
+        this.$router.push('/login');
+      }
+    }
+  }
 };
 </script>
+
 
 <style scoped>
 .signup-page {

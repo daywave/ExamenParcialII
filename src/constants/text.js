@@ -21,7 +21,9 @@ export default {
       emailPlaceholder: "Tu correo electronico",
       signUpButton: "Registrarse",
       alreadyHaveAccount: "¿Ya tienes una cuenta?",
-      loginLink: "Iniciar sesión."
+      loginLink: "Iniciar sesión.",
+      passwordPlaceholder: "Contraseña",
+      passwordLabel: "Contraseña"
     }
   };
   

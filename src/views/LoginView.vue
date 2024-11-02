@@ -13,7 +13,7 @@
               <input
                 type="text"
                 id="email"
-                v-model="email"
+                v-model="user.correoElectronico" 
                 :placeholder="texts.usernamePlaceholder"
                 required
               />
@@ -26,7 +26,7 @@
               <input
                 type="password"
                 id="password"
-                v-model="password"
+                v-model="user.password"
                 :placeholder="texts.passwordPlaceholder"
                 required
               />
@@ -35,37 +35,46 @@
           <button type="submit" class="login-button">{{ texts.loginButton }}</button>
           <a href="#" class="forgot-password">{{ texts.forgotPassword }}</a>
         </form>
-        <!-- Enlace para ir a la página de registro -->
         <p class="signup-link">
           {{ texts.noAccount }} <router-link to="/signup">{{ texts.signUpLink }}</router-link>
         </p>
       </div>
     </div>
-
     <div class="illustration-section">
       <img :src="illustration" alt="Illustration" />
     </div>
   </div>
 </template>
 
+
 <script>
-import texts from "@/constants/text"; // Importa los textos de la aplicación
+import texts from "@/constants/text";
+import User from "@/models/User";
+import UserController from "@/controllers/UserController";
 
 export default {
   data() {
     return {
-      texts: texts.login, // Accede a los textos de la sección login
-      email: "",
-      password: "",
-      logo: require("@/assets/logo_sf.png"),
-      illustration: require("@/assets/animated_sf.png"),
+      texts: texts.login,
+      user: new User(), // Instancia el modelo de usuario
+      logo: require("@/assets/logo_sf.png"), // Imagen del logo
+      illustration: require("@/assets/animated_sf.png"), // Imagen de ilustración
     };
   },
   methods: {
-    handleLogin() {
-      console.log("Login attempted with", this.email, this.password);
-    },
-  },
+    async handleLogin() {
+      const response = await UserController.login({
+        correoElectronico: this.user.correoElectronico,
+        password: this.user.password,
+      });
+
+      alert(response.message);
+      if (response.success) {
+        localStorage.setItem('token', response.token);
+        this.$router.push('/dashboard');
+      }
+    }
+  }
 };
 </script>
 
