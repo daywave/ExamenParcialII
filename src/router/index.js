@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/LoginView.vue';
 import SignUpView from '../views/SignUpView.vue';
 import DashboardView from '../views/DashboardView.vue';
+import RegisterClientView from '../views/RegisterClientView.vue';
+import RegisterCreditView from '@/views/RegisterCreditView.vue';
+import GetHistoryView from '@/views/GetHistoryView.vue'; // Importa la vista de historial
 
 const routes = [
   {
@@ -27,14 +30,26 @@ const routes = [
   {
     path: '/clients',
     name: 'Clients',
-    meta: { requiresAuth: true }, // Protege esta ruta en el futuro
-    // component: ClientsView, // Agrega esta vista más adelante
+    meta: { requiresAuth: true },
+    // component: ClientsView, // Agrega esta vista más adelante si es necesario
   },
   {
     path: '/new-credit',
     name: 'NewCredit',
-    meta: { requiresAuth: true }, // Protege esta ruta en el futuro
-    // component: NewCreditView, // Agrega esta vista más adelante
+    component: RegisterCreditView,
+    meta: { requiresAuth: true }, 
+  },
+  {
+    path: '/register-client',
+    name: 'RegisterClient',
+    component: RegisterClientView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: GetHistoryView, // Asocia la nueva ruta al componente de historial
+    meta: { requiresAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',
